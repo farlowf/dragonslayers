@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser-arcade-physics.min.js"></script>
+</head>
+
+<body>
+    <script>
+        var config = {
+            type: Phaser.AUTO,
+            width: window.innerWidth,
+            height: window.innerHeight,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 0 }
+                }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        var game = new Phaser.Game(config);
+        var player;
+        var map;
+        var cursors;
+
+        var monsters = [
+            {
+                type: "werewolf",
+                location: { x: 938, y: 326 },
+            },
+            {
+                type: "werewolf",
+                location: { x: -208, y: 355 },
+            }
+        ];
+
+        function preload() {
+            this.load.image('map', '/worldmap.png');
+            this.load.image('player', '/knight.png');
+            this.load.image('logo', 'http://labs.phaser.io/assets/sprites/phaser3-logo.png');
+            this.load.image('red', 'http://labs.phaser.io/assets/particles/red.png');
+
+            this.load.image('werewolf', '/monsters/werewolf.png');
+        }
+
+        function create() {
+
+            // Set up arrow keys
+            cursors = this.input.keyboard.createCursorKeys();
+
+            // Add map
+            map = this.add.image(200, 200, 'map');
+
+            // Add player and scale down
+            player = this.physics.add.image(300, 300, 'player');
+            player.setScale(0.25, 0.25);
+
+            // Camera follows player and is zoomed in
+            this.cameras.main.startFollow(player);
+            this.cameras.main.setZoom(2, 2);
+
+            // Debug location
+            this.input.keyboard.on('keydown-SPACE', function (event) {
+                alert(parseInt(player.x) + ' ' + parseInt(player.y));
+            });
+
+            // Create monsters
+            for (monster of monsters) {
+                monster.sprite = this.physics.add.image(monster.location.x, monster.location.y, monster.type);
+            }
+
+        }
+
+        function update() {
+            player.setVelocity(0);
+
+            if (cursors.left.isDown) {
+                player.setVelocityX(-100);
+            }
+            else if (cursors.right.isDown) {
+                player.setVelocityX(100);
+            }
+
+            if (cursors.up.isDown) {
+                player.setVelocityY(-100);
+            }
+            else if (cursors.down.isDown) {
+                player.setVelocityY(100);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
