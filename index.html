@@ -28,6 +28,7 @@
         var player;
         var map;
         var cursors;
+        var context;
 
         var monsters = [
             {
@@ -50,15 +51,17 @@
         }
 
         function create() {
+            context = this;
 
             // Set up arrow keys
             cursors = this.input.keyboard.createCursorKeys();
 
             // Add map
-            map = this.add.image(200, 200, 'map');
+            map = this.add.sprite(0, 0, 'map').setInteractive();
+            map.setOrigin(0, 0);
 
             // Add player and scale down
-            player = this.physics.add.image(300, 300, 'player');
+            player = this.physics.add.image(2400, 2400, 'player');
             player.setScale(0.25, 0.25);
 
             // Camera follows player and is zoomed in
@@ -68,6 +71,13 @@
             // Debug location
             this.input.keyboard.on('keydown-SPACE', function (event) {
                 alert(parseInt(player.x) + ' ' + parseInt(player.y));
+            });
+
+            // Debug grid
+            map.on('pointerdown', function (pointer) {
+                let { x, y } = mouse_location(pointer);
+                let grid_num = pixels_to_grid_num(x, y);
+                draw_grid_square(grid_num);
             });
 
             // Create monsters
@@ -94,6 +104,46 @@
                 player.setVelocityY(100);
             }
         }
+
+        function pixels_to_grid_xy(x, y) {
+            return {
+                x: parseInt((x + 8) / 16), y: parseInt((y + 8) / 16)
+            };
+        }
+
+        function pixels_to_grid_num(pixel_x, pixel_y) {
+            let { x, y } = pixels_to_grid_xy(pixel_x, pixel_y);
+            return (y * 256) + x;
+        }
+
+        function grid_pixel_origin(grid_num) {
+            let y = parseInt(grid_num / 256) * 16;
+            let x = (grid_num % 256) * 16;
+
+            return { x, y };
+        }
+
+        function draw_grid_square(grid_num) {
+            let { x, y } = grid_pixel_origin(grid_num);
+            var r1 = context.add.rectangle(x, y, 16, 16, 0x6666ff);
+            r1.alpha = 0.8;
+        }
+
+        function mouse_location(pointer) {
+            // The player is always the middle of the screen
+            let player_x = window.innerWidth / 2;
+            let player_y = window.innerHeight / 2;
+
+            // Divide by 2 because zoom
+            let offset_x = (pointer.x - player_x) / 2;
+            let offset_y = (pointer.y - player_y) / 2;
+
+            let pixel_x = player.x + offset_x;
+            let pixel_y = player.y + offset_y;
+
+            return { x: pixel_x, y: pixel_y }
+        }
+
     </script>
 
 </body>
