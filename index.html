@@ -78,7 +78,7 @@
             map.on('pointerdown', function (pointer) {
                 let { x, y } = mouse_location(pointer);
                 let grid_num = pixels_to_grid_num(x, y);
-                draw_grid_square(grid_num);
+                terrain_click_grid(grid_num);
             });
 
             // Create monsters
@@ -122,12 +122,6 @@
             let x = (grid_num % 256) * 16;
 
             return { x, y };
-        }
-
-        function draw_grid_square(grid_num, colour = 0x6666ff) {
-            let { x, y } = grid_pixel_origin(grid_num);
-            var r1 = context.add.rectangle(x, y, 16, 16, colour);
-            r1.alpha = 0.8;
         }
 
         function mouse_location(pointer) {
