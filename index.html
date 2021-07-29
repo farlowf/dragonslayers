@@ -92,15 +92,32 @@
             player.setVelocity(0);
 
             if (cursors.left.isDown) {
-                player.setVelocityX(-100);
+                if (player.x< 475){
+                    player.setVelocityX(0);
+                }
+                else {
+                    player.setVelocityX(-100);
+                }
+                
             }
             else if (cursors.right.isDown) {
+                if (player.x> 3922){
+                    player.setVelocityX(0);
+                }
+                else {
                 player.setVelocityX(100);
+                }
             }
 
             if (cursors.up.isDown) {
-                player.setVelocityY(-100);
+                if (player.y < 247){
+                    player.setVelocityY(0);
+                }
+                else {
+                    player.setVelocityY(-100);
+                }
             }
+
             else if (cursors.down.isDown) {
                 player.setVelocityY(100);
             }
