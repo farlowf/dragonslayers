@@ -62,7 +62,7 @@
             map.setOrigin(0, 0);
 
             // Add player and scale down
-            player = this.physics.add.image(2400, 2400, 'player');
+            player = this.physics.add.image(2238, 2385, 'player');
             player.setScale(0.25, 0.25);
 
             // Camera follows player and is zoomed in
@@ -98,11 +98,32 @@
 
         }
 
+        function next_terrain(direction) {
+            let future_x = player.x;
+            let future_y = player.y;
+
+            if (direction == 'left') {
+                future_x = future_x - 10;
+            }
+            else if (direction == 'right') {
+                future_x = future_x + 10;
+            }
+            else if (direction == 'up') {
+                future_y = future_y - 10;
+            }
+            else if (direction == 'down') {
+                future_y = future_y + 10;
+            }
+
+            let future_grid_num = pixels_to_grid_num(future_x, future_y);
+            return get_terrain(future_grid_num);
+        }
+
         function update() {
             player.setVelocity(0);
 
             if (cursors.left.isDown) {
-                if (player.x< 475){
+                if (player.x < 475 || next_terrain('left').id == 'ocean'){
                     player.setVelocityX(0);
                 }
                 else {
@@ -111,7 +132,7 @@
                 
             }
             else if (cursors.right.isDown) {
-                if (player.x> 3922){
+                if (player.x> 3922 || next_terrain('right').id == 'ocean'){
                     player.setVelocityX(0);
                 }
                 else {
@@ -120,7 +141,7 @@
             }
 
             if (cursors.up.isDown) {
-                if (player.y < 247){
+                if (player.y < 247 || next_terrain('up').id == 'ocean'){
                     player.setVelocityY(0);
                 }
                 else {
@@ -129,7 +150,12 @@
             }
 
             else if (cursors.down.isDown) {
-                player.setVelocityY(100);
+                if (player.y > 3723 || next_terrain('down').id == 'ocean'){
+                    player.setVelocityY(0);
+                }
+                else {
+                    player.setVelocityY(100);
+                }
             }
         }
 
