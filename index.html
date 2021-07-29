@@ -74,6 +74,16 @@
                 alert(parseInt(player.x) + ' ' + parseInt(player.y));
             });
 
+            // Draw the terrainmap
+            this.input.keyboard.on('keydown-X', function (event) {
+                load_terrainmap();
+            });
+
+            // Save terrainmap
+            this.input.keyboard.on('keydown-S', function (event) {
+                save_terrainmap();
+            });
+
             // Debug grid
             map.on('pointerdown', function (pointer) {
                 let { x, y } = mouse_location(pointer);

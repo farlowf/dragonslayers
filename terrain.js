@@ -43,6 +43,22 @@ function terrain_click_grid(grid_num) {
     }
 }
 
+
+function load_terrainmap() {
+    for (grid_num in window.terrainmap) {
+        let terrain_id = window.terrainmap[grid_num];
+        terrain_squares.push(draw_terrain_square(grid_num, terrain[terrain_id]));
+    }
+}
+
+function save_terrainmap() {
+    for (square of terrain_squares) {
+        window.terrainmap[square.grid_num] = square.terrain.id
+    }
+
+    console.log(JSON.stringify(window.terrainmap));
+}
+
 function draw_terrain_square(grid_num, terrain) {
     let { x, y } = grid_pixel_origin(grid_num);
     var terrain_square = context.add.rectangle(x, y, 16, 16, terrain.colour);
@@ -93,4 +109,4 @@ var terrain = {
 
 
 // Holds terrain information for each grid item
-window.terrainmap = {};
+window.terrainmap = { "38036": "ocean", "38037": "ocean", "38038": "ocean", "38039": "ocean", "38040": "ocean" };
