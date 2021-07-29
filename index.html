@@ -7,6 +7,28 @@
 
 <body>
     <script>
+
+        var terrain={
+
+            plain:{
+                cover: 0.0,
+                enlarge: 0,
+            },
+            grass:{
+                cover: 0.4,
+                enlarge: 0,
+            },
+            mountain:{
+                cover: 0.0,
+                enlarge: 0.1
+            },
+            forest:{
+                cover: 1.0,
+                enlarge: 0
+            }
+
+
+        };
         var config = {
             type: Phaser.AUTO,
             width: window.innerWidth,
